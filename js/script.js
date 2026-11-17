@@ -54,6 +54,51 @@ contactOptionsModal.addEventListener('click', (event) => {
     }
 });
 
+const events = {
+    '1-15':'Republic Day',
+    '2-10':'Unit Test 1',
+    '2-14':'Sports Day',
+    '3-5':'Science Exhibition',
+    '3-20':'Term1 Exams',
+    '4-10':'Summer Vacation',
+    '7-1':'School Reopens',
+    '8-15':'Independence Day',
+    '9-5':"Teachers' Day",
+    '10-2':'Gandhi Jayanti',
+    '10-15':'Term2 Exams',
+    '11-3':'Diwali Break',
+    '12-10':'Annual Day',
+    '12-25':'Christmas'
+};
+
+const monthSelect = document.getElementById('monthSelect');
+const calendarContainer = document.getElementById('calendarContainer');
+if (monthSelect && calendarContainer) {
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    months.forEach((m,i) => {
+        const opt = document.createElement('option');
+        opt.value = i+1;
+        opt.textContent = m + ' 2026';
+        monthSelect.appendChild(opt);
+    });
+    const renderCalendar = (month) => {
+        const firstDay = new Date(2026, month-1, 1).getDay();
+        const daysInMonth = new Date(2026, month, 0).getDate();
+        const startOffset = (firstDay + 6) % 7; // Monday-first
+        let html = '<table class="cal-table"><thead><tr>' + ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>'<th>'+d+'</th>').join('') + '</tr></thead><tbody><tr>';
+        for (let i=0;i<startOffset;i++) html += '<td></td>';
+        for (let d=1; d<=daysInMonth; d++) {
+            const key = month + '-' + d;
+            const ev = events[key] ? ' class="event-day" title="'+events[key]+'"' : '';
+            html += '<td'+ev+'>'+d+'</td>';
+            if ((startOffset + d) % 7 === 0) html += '</tr><tr>';
+        }
+        html += '</tr></tbody></table>';
+        calendarContainer.innerHTML = html;
+    };
+    monthSelect.addEventListener('change', () => renderCalendar(parseInt(monthSelect.value)));
+    renderCalendar(parseInt(monthSelect.value) || 1);
+}
 if (!window.emailjs) {
     console.error('EmailJS library did not load.');
 } else {

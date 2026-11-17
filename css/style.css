@@ -1346,3 +1346,9 @@ section h2{
     opacity:.7;
 
 }
+
+.admin-btn{
+    padding:8px 18px;
+    font-size:14px;
+    border-radius:30px;
+}
